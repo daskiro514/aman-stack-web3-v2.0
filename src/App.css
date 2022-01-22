@@ -1,0 +1,32 @@
+.customer-dashboard {
+  min-height: 100vh;
+}
+
+.bg-black {
+  background-color: black;
+}
+
+.box-shadow {
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 1);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: rgb(55, 139, 244);
+  border-color: rgb(55, 139, 244);
+}
+
+.bg-primary {
+  background-color: rgb(55, 139, 244) !important;
+}
+
+.text-primary {
+  color: rgb(55, 139, 244) !important;
+}
+
+.font-18 {
+  font-size: 18px;
+}
