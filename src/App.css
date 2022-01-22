@@ -17,6 +17,7 @@
 
 .header-box-shadow {
   box-shadow: 0 0 5px 5px #000;
+  filter: contrast(1);
 }
 
 .cursor-pointer {

@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 import Web3 from "web3"
 import Web3Modal from "web3modal"
 import logo from '../../img/logo.svg'
-import leftImage from '../../img/left.svg'
-import rightImage from '../../img/right.svg'
 import ellipseAddress from '../../utils/ellipseAddress'
 import { setAlert } from '../../actions/alert'
 
