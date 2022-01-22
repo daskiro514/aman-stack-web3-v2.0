@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import Web3 from "web3"
 import Web3Modal from "web3modal"
 import logo from '../../img/logo.svg'
+import leftImage from '../../img/left.svg'
+import rightImage from '../../img/right.svg'
 import ellipseAddress from '../../utils/ellipseAddress'
 import { setAlert } from '../../actions/alert'
 
@@ -62,9 +64,11 @@ const Dashboard = ({ setAlert }) => {
   }
 
   return (
-    <div className='customer-dashboard bg-black text-white'>
+    <div className='customer-dashboard bg-dark text-white'>
+      <div className='left-image'></div>
+      <div className='right-image'></div>
       <div className='container-fluid'>
-        <div className='row box-shadow bg-dark'>
+        <div className='row bg-dark header-box-shadow'>
           <div className='col-md-4 p-4'>
             <img src={logo} alt='SETIMAGE' />
           </div>
