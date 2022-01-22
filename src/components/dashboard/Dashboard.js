@@ -2,54 +2,112 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Web3 from "web3"
 import Web3Modal from "web3modal"
+import logo from '../../img/logo.svg'
+import ellipseAddress from '../../utils/ellipseAddress'
+import { setAlert } from '../../actions/alert'
 
-const Dashboard = () => {
+const Dashboard = ({ setAlert }) => {
 
   const providerOptions = {
     /* See Provider Options Section */
-  };
+  }
 
   const web3Modal = new Web3Modal({
     network: "mainnet", // optional
     cacheProvider: true, // optional
     providerOptions // required
-  });
+  })
 
   const [provider, setProvider] = React.useState(null)
   const [web3, setWeb3] = React.useState(null)
+  const [walletAddress, setWalletAddress] = React.useState(null)
+
+  const [mintValue, setMintValue] = React.useState(2)
+  const mintMaxValue = 50
+
+  const mintValueIncrement = () => {
+    if (mintValue + 1 > mintMaxValue) {
+      setAlert('Maximum Value Overflow', 'warning')
+      return
+    }
+    setMintValue(mintValue + 1)
+  }
+
+  const mintValueDecrement = () => {
+    if (mintValue - 1 < 1) {
+      setAlert('It can not be set as 0', 'warning')
+      return
+    }
+    setMintValue(mintValue - 1)
+  }
 
   const connectWallet = async () => {
-    const _provider = await web3Modal.connect()
-    const _web3 = new Web3(provider)
+    let _provider = null
+    let _web3 = null
+    let _accounts = null
+
+    _provider = await web3Modal.connect()
+    _web3 = new Web3(_provider)
+    _accounts = await _web3.eth.getAccounts()
+
     setProvider(_provider)
     setWeb3(_web3)
+    setWalletAddress(_accounts[0].toLowerCase())
+  }
+
+  const disconnectWallet = async () => {
+    setWalletAddress(null)
+    setProvider(null)
+    setWeb3(null)
   }
 
   return (
     <div className='customer-dashboard bg-black text-white'>
-      <div className='container'>
-        <div className='row pt-5'>
-          <div className='col-md-12'>
-            <div className='text-right mb-3'>
+      <div className='container-fluid'>
+        <div className='row box-shadow bg-dark'>
+          <div className='col-md-4 p-4'>
+            <img src={logo} alt='SETIMAGE' />
+          </div>
+          <div className='col-md-4 text-center text-primary h3 p-4'>
+            <i className='fa fa-university'></i>
+            <span className='ml-2'>Staking</span>
+          </div>
+          <div className='col-md-4 text-right p-4'>
+            {walletAddress
+              ?
+              <>
+                <span className='mr-3'>{ellipseAddress(walletAddress)}</span>
+                <button
+                  className='btn btn-primary rounded-pill'
+                  onClick={() => disconnectWallet()}
+                >
+                  Disconnect
+                </button>
+              </>
+              :
               <button
                 className='btn btn-primary rounded-pill'
                 onClick={() => connectWallet()}
               >
                 Connect Wallet
               </button>
-            </div>
+            }
           </div>
+        </div>
+      </div>
+      <div className='container'>
+        <div className='row pt-5'>
           <div className='col-md-6'>
             <div className='box-shadow rounded-lg p-3 m-3' style={{ minHeight: '280px' }}>
               <div className='h2 text-center'>Mint Your Node NFT</div>
               <div className='text-center text-primary'>Current Node Generation: 1</div>
               <div className='text-center'>
-                <i className="fa fa-minus h3 mr-3 font-weight-lighter cursor-pointer"></i>
+                <i onClick={() => mintValueDecrement()} className="fa fa-minus h3 mr-3 font-weight-lighter cursor-pointer"></i>
                 <span>
-                  <span className='h1 font-weight-bolder'>2/</span>
-                  <span className='h3'>50</span>
+                  <span className='h1 font-weight-bolder'>{mintValue}/</span>
+                  <span className='h3'>{mintMaxValue}</span>
                 </span>
-                <i className="fa fa-plus h3 ml-3 font-weight-lighter cursor-pointer"></i>
+                <i onClick={() => mintValueIncrement()} className="fa fa-plus h3 ml-3 font-weight-lighter cursor-pointer"></i>
               </div>
               <div className='text-center'>
                 <span className='text-primary'>Price: </span>
@@ -128,4 +186,4 @@ const mapStateToProps = state => ({
 
 })
 
-export default connect(mapStateToProps, {})(Dashboard)
+export default connect(mapStateToProps, { setAlert })(Dashboard)
